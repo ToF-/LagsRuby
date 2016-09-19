@@ -22,7 +22,7 @@ while(!flag) do
             when 'Q'
                 flag = true
             when 'L'
-                service.Liste
+                service.liste
             when 'A'
                 service.ajouterOrdre
             when 'S'

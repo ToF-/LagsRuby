@@ -18,18 +18,44 @@ class LagsService
                     }
     end
 
+    # écrit le fichier des ordres
+    def writeOrdres(nomFich)
+        File.open(nomFich, 'w') { |file|
+            @listOrdre.each { |ordre|
+               file.puts("#{ordre.id};#{ordre.debut.to_s};#{ordre.duree.to_s};#{ordre.prix.to_s}") 
+            }   
+        }
+    end
+    # affiche la liste des ordres
+    def liste()
+        puts("LISTE DES ORDRES\n");
+        printf("%8s %8s %5s %10s\n",
+            "ID", "DEBUT", "DUREE", "PRIX")
+        printf("%8s %8s %5s %10s\n",
+           "--------", "-------", "-----", "----------")
+        @listOrdre = @listOrdre.sort{ |a,b| a.debut <=> b.debut }           
+        @listOrdre.each { |ordre| afficherOrdre(ordre) }
+        printf("%8s %8s %5s %10s\n",
+           "--------", "-------", "-----", "----------");
+    end
+
+    def afficherOrdre(ordre)
+        printf("%8s %08d %05d %10.2f\n", ordre.id, ordre.debut, ordre.duree, ordre.prix);
+
+    end
+
     # Ajoute un ordre; le CA est recalculé en conséquence
     def ajouterOrdre()
         puts "AJOUTER UN ORDRE"
         puts "FORMAT = ID;DEBUT;FIN;PRIX"
-        line = gets.upcase
+        line = gets.chop.upcase
         champs = line.split(";")
         id = champs[0]
         dep = champs[1].to_i
         dur = champs[2].to_i
         prx = champs[3].to_f
         ordre = Ordre.new(id, dep, dur, prx)
-        listOrdre << ordre
+        @listOrdre << ordre
         writeOrdres("ordres.csv") 
     end
    # def CalculerLeCA()
@@ -58,8 +84,8 @@ class LagsService
     def suppression
         puts("SUPPRIMER UN ORDRE");
         puts("ID:");
-        id = gets.upcase
-        @listOrdre = @listOrdre.select{ |ordre| ordre.id != id }
+        id = gets.chop. upcase
+        @listOrdre = @listOrdre.delete_if{ |ordre| ordre.id == id }
         writeOrdres("ORDRES.CSV")
     end
 
