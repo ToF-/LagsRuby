@@ -1,5 +1,6 @@
 require_relative 'LagsService'
 require 'io/console'
+debug = true
 
 # ==================
 # fonction principale
@@ -27,7 +28,7 @@ while(!flag) do
             when 'S'
                 service.suppression
             when 'C'
-                service.CalculerLeCA(debug)
+                service.calculerLeCA(debug)
         end
 
     end
